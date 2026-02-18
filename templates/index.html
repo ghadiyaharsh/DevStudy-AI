@@ -4,10 +4,42 @@
     <title>DevStudy AI</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
+
 <body>
-    <div class="container">
-        <h1>DevStudy AI</h1>
-        <p>Your Developer & Study Assistant</p>
+    <div class="main-container">
+        <div class="card">
+            <h1>DevStudy AI</h1>
+            <p>Your Developer & Study Assistant</p>
+
+            <textarea id="question" placeholder="Ask something..."></textarea>
+
+            <button onclick="askAI()">Ask</button>
+
+            <div id="response"></div>
+        </div>
     </div>
+ 
+
+    <script>
+        async function askAI() {
+            const question = document.getElementById("question").value;
+
+            const formData = new FormData();
+            formData.append("question", question);
+            document.getElementById("response").innerText = "Thinking...";
+
+        try{    
+            const response = await fetch("/ask",{
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            document.getElementById("response").innerText = data.answer;
+        } catch (error) {
+            document.getElementById("response").innerText = "Something went wrong.";
+        }
+    </script>    
 </body>
 </html>
