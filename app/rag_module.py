@@ -2,6 +2,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from app.llm_service import generate_response
 
 def load_and_store_pdf(pdf_path: str):
     # Load PDF
@@ -58,3 +59,35 @@ def query_vectorstore(question:str):
     
     return results
     
+    
+    
+def rag_answer(question:str):
+    #1 retrieve relevent chunks
+    results = query_vectorstore(question)
+    
+    if not results:
+        return "The provided context does not contain enough information to answer this question."
+    
+    #2 merge context
+    context = ""
+    for doc in results:
+        context += doc.page_content + "\n\n"
+        
+    #3 Create grounded prompt
+    prompt = f"""
+    Use the following context to answer the question.
+    If the answer is not in the context, say you don't know.
+    
+    Context:
+    {context}
+    
+    Question:
+    {question}
+    
+    Answer:
+    """
+    
+    #4 send to Ollama
+    answer = generate_response(prompt)
+    
+    return answer      
