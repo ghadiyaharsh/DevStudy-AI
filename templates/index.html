@@ -18,22 +18,34 @@
 
             <div id="response"></div>
         </div>
+
+        <h2>Upload PDF</h2>
+<form action="/upload-pdf" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit">Upload</button>
+</form>
+
+<h2>Ask Question</h2>
+<form action="/ask-rag" method="post">
+    <textarea name="question" rows="4"></textarea>
+    <button type="submit">Ask</button>
+</form>
     </div>
  
 
     <script>
-        async function askAI() {
+        async function askAI(){
             const question = document.getElementById("question").value;
 
             const formData = new FormData();
             formData.append("question", question);
             document.getElementById("response").innerText = "Thinking...";
 
-        try{    
-            const response = await fetch("/ask",{
-                method: "POST",
-                body: formData
-            });
+            try{    
+                const response = await fetch("/ask",{
+                    method: "POST",
+                    body: formData
+                });
 
             const data = await response.json();
             document.getElementById("response").innerText = data.answer;

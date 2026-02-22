@@ -53,7 +53,7 @@ def query_vectorstore(question:str):
            
     )
     
-    retriever = vectorstore.as_retriever()
+    retriever = vectorstore.as_retriever(search_kwargs={"k":3})
     results = retriever.invoke(question)
 
     
