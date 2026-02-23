@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Study Module - DevStudy AI</title>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+    <body>
+
+        <h2>Upload PDF</h2>
+        <form action="/upload-pdf" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        <h2>Ask Question</h2>
+        <form action="/ask-rag" method="post">
+            <textarea name="question" rows="4"></textarea>
+            <button type="submit">Ask</button>
+        </form>
+
+        {% if answer %}
+            <div class="answer-box">
+                <h3>Answer:</h3>
+                <p>{{ answer }}</p>
+            </div>
+        {% endif %}
+
+        <a href="/">⬅ Back to Home</a>
+
+    </body>
+</html>

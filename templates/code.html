@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Module</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <a href="/">⬅ Back to Home</a>
+
+    <h2>Paste Your Code</h2>
+    <form action="/explain-code" method="post">
+        {% csrf_token %}
+        <textarea name="code" rows="10" placeholder="Enter your code here..."></textarea>
+        <button type="submit">Explain Code</button>
+    </form>
+
+    {% if answer %}
+        <div class="answer-box">
+            <h3>Analysis:</h3>
+            <pre><code>{{ answer }}</code></pre>
+        </div>
+    {% endif %}
+</body>
+</html>

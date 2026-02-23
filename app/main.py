@@ -18,7 +18,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("home.html", {"request": request})
 
 @app.post("/ask")
 def ask_ai(question:str = Form(...)):
@@ -36,9 +36,43 @@ async def upload_pdf(file: UploadFile = File(...)):
 
     load_and_store_pdf(file_location)
 
-    return RedirectResponse(url="/", status_code=303)
+    return RedirectResponse(url="/study", status_code=303)
 
-@app.post("/ask-rag")
-async def ask_rag(question: str = Form(...)):
+@app.post("/ask-rag", response_class=HTMLResponse)
+async def ask_rag(request: Request, question: str = Form(...)):
     answer = rag_answer(question)
-    return {"answer": answer}
+    return templates.TemplateResponse(
+        "study.html",
+        {"request":request,"answer": answer}
+    )    
+
+
+@app.get("/study", response_class=HTMLResponse)
+async def study_page(request: Request):
+    return templates.TemplateResponse("study.html", {"request": request})
+
+@app.get("/code", response_class=HTMLResponse)
+async def code_page(request: Request):
+    return templates.TemplateResponse("code.html", {"request": request})
+
+
+@app.post("/explain-code", response_class=HTMLResponse)
+async def explain_code(request: Request, code: str = Form(...)):
+    prompt = f"""
+You are an expert programming assistant.
+
+1. Explain what the following code does.
+2. Identify potential issues or bugs.
+3. Suggest improvements if possible.
+
+Code:
+{code}
+"""
+
+    from app.llm_service import generate_response
+    answer = generate_response(prompt)
+
+    return templates.TemplateResponse(
+        "code.html",
+        {"request": request, "answer": answer}
+    )
