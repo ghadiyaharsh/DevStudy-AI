@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
     <title>Code Module</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <a href="/">⬅ Back to Home</a>
+<body>-->
 
+{% extends "base.html" %}
+{% block content %}
+    <h3>🤖 AI Analysis</h3>
     <h2>Paste Your Code</h2>
     <form action="/explain-code" method="post">
-        {% csrf_token %}
         <textarea name="code" rows="10" placeholder="Enter your code here..."></textarea>
         <button type="submit">Explain Code</button>
     </form>
@@ -20,5 +21,8 @@
             <pre><code>{{ answer }}</code></pre>
         </div>
     {% endif %}
-</body>
-</html>
+        <a href="/">⬅ Back to Home</a>
+{% endblock %}
+
+<!--</body>
+</html>-->

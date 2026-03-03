@@ -9,6 +9,7 @@ import shutil
 
 from app.llm_service import generate_response
 from fastapi import Form
+pdf_uploaded = False
 
 app = FastAPI()
 
@@ -28,24 +29,58 @@ def ask_ai(question:str = Form(...)):
 from fastapi.responses import RedirectResponse
 
 @app.post("/upload-pdf")
-async def upload_pdf(file: UploadFile = File(...)):
+async def upload_pdf(request: Request, file: UploadFile = File(...)):
+    
+    global pdf_uploaded
+    
     file_location = f"uploaded_{file.filename}"
 
-    with open(file_location, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    with open(file_location, "wb") as f:
+        f.write(await file.read())
+
 
     load_and_store_pdf(file_location)
+    pdf_uploaded = True
 
-    return RedirectResponse(url="/study", status_code=303)
+    return templates.TemplateResponse(
+        "study.html",
+        {
+            "request": request,
+            "message": "✅ PDF uploaded successfully!"
+        }
+    )
 
 @app.post("/ask-rag", response_class=HTMLResponse)
 async def ask_rag(request: Request, question: str = Form(...)):
+    global pdf_uploaded
+
+    if not pdf_uploaded:
+        return templates.TemplateResponse(
+            "study.html",
+            {
+                "request": request,
+                "error": "⚠️ Please upload a PDF first."
+            }
+        )
+
+    if not question.strip():
+        return templates.TemplateResponse(
+            "study.html",
+            {
+                "request": request,
+                "error": "⚠️ Question cannot be empty."
+            }
+        )
+
     answer = rag_answer(question)
+
     return templates.TemplateResponse(
         "study.html",
-        {"request":request,"answer": answer}
-    )    
-
+        {
+            "request": request,
+            "answer": answer
+        }
+    ) 
 
 @app.get("/study", response_class=HTMLResponse)
 async def study_page(request: Request):
@@ -61,9 +96,16 @@ async def explain_code(request: Request, code: str = Form(...)):
     prompt = f"""
 You are an expert programming assistant.
 
-1. Explain what the following code does.
-2. Identify potential issues or bugs.
-3. Suggest improvements if possible.
+Analyze the following code and respond in this format:
+
+### Code Explanation
+Explain what the code does clearly.
+
+### Possible Issues
+Mention bugs or bad practices if any.
+
+### Suggested Improvements
+Suggest improvements or optimizations.
 
 Code:
 {code}

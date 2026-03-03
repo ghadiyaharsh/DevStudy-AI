@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>DevStudy AI</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>DevStudy AI</h1>
+{% extends "base.html" %}
 
-        <div class="nav-buttons">
-            <a href="/study"><button>Study Module</button></a>
-            <a href="/code"><button>Code Module</button></a>
-        </div>
-    </div>
-</body>
-</html>
+{% block content %}
+
+<h1>Welcome to DevStudy AI</h1>
+
+<p>Select a module:</p>
+
+<a href="/study">📚 Study Assistant</a><br><br>
+<a href="/code">💻 Code Assistant</a>
+
+{% endblock %}

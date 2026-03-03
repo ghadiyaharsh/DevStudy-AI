@@ -1,11 +1,15 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
     <head>
         <title>Study Module - DevStudy AI</title>
         <link rel="stylesheet" href="/static/style.css">
     </head>
-    <body>
-
+    <body>-->
+{% extends "base.html" %}
+{% block content %}
+       <p>
+Upload a study PDF first, then ask questions based on the document.
+</p>
         <h2>Upload PDF</h2>
         <form action="/upload-pdf" method="post" enctype="multipart/form-data">
             <input type="file" name="file" required>
@@ -13,10 +17,20 @@
         </form>
 
         <h2>Ask Question</h2>
-        <form action="/ask-rag" method="post">
+        <form action="/ask-rag" method="post" onsubmit="showLoader()">
             <textarea name="question" rows="4"></textarea>
             <button type="submit">Ask</button>
+            <div id="loading" style="display:none; margin-top:10px;">
+            ⏳ Processing your question...
+            </div>
         </form>
+        {% if message %}
+        <p style="color: lightgreen;">{{ message }}</p>
+        {% endif %}
+
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
 
         {% if answer %}
             <div class="answer-box">
@@ -27,5 +41,19 @@
 
         <a href="/">⬅ Back to Home</a>
 
-    </body>
-</html>
+
+        <script>
+            function showLoader() {
+                document.getElementById("loading").style.display = "block";
+
+                let ans = document.getElementById("answer-box");
+                if(ans){
+                    ans.innerHTML = "";
+                }
+         } 
+            
+        </script>  
+{% endblock %}  
+
+    <!--</body>
+</html>-->

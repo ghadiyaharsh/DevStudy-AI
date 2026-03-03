@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DevStudy AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body style="
+background:#0f172a;
+color:white;
+font-family:Arial;
+margin:0;
+">
+
+<!-- NAVBAR -->
+<div style="
+background:#020617;
+padding:15px;
+display:flex;
+justify-content:space-between;
+">
+
+<h2>DevStudy AI</h2>
+
+<div>
+<a href="/" style="color:white;margin-right:15px;">Home</a>
+<a href="/study" style="color:white;margin-right:15px;">Study</a>
+<a href="/code" style="color:white;">Code</a>
+</div>
+
+</div>
+
+<!-- PAGE CONTENT -->
+<div style="padding:30px;">
+{% block content %}
+{% endblock %}
+</div>
+
+</body>
+</html>
