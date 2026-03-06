@@ -6,12 +6,13 @@
     </head>
     <body>-->
 {% extends "base.html" %}
+
 {% block content %}
 <div class="study-container">
     <p class="message-success">
         Upload a study PDF first, then ask questions based on the document.
     </p>
-    <div class="study-container">
+
     <div class="study-section">
         <h2>Upload PDF</h2>
         <form action="/upload-pdf" method="post" enctype="multipart/form-data" class="upload-form">
@@ -62,10 +63,9 @@
         if(ans) {
             ans.innerHTML = "";
         }
-    } 
-</script>  
+    }
+</script>
 {% endblock %}
-
 
     <!--</body>
 </html>-->

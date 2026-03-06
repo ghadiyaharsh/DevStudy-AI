@@ -5,44 +5,16 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    <div class="navbar">
+        <h2>DevStudy AI</h2>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/study">Study</a>
+            <a href="/code">Code</a>
+        </div>
+    </div>
 
-<!--<body style="
-background: white;
-color:black;
-font-family:Arial;
-margin:0;
-">-->
-
-<!-- NAVBAR -->
-<!--<div style="background: orange;
-padding:20px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-">-->
-<div class="navbar">
-<h2>DevStudy AI</h2>
-
-<div class="nav-links">
-<a href="/">Home</a>
-<a href="/study">Study</a>
-<a href="/code">Code</a>
-</div>
-
-</div>
-
-<!-- PAGE CONTENT -->
-<!--<div style="
-width:40px;
-display:flex;
-justify-content:center;">-->
-
-
-</div>
-
-{% block content %}
-{% endblock %}
-</div>
-
+    {% block content %}
+    {% endblock %}
 </body>
 </html>

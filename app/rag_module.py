@@ -90,7 +90,7 @@ def rag_answer(question:str):
     Answer clearly and concisely.
     """
     
-    #4 send to Ollama
+    #4 send to Ollama   
     answer = generate_response(prompt)
     
     return answer      
