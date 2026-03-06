@@ -8,20 +8,38 @@
 
 {% extends "base.html" %}
 {% block content %}
-    <h3>🤖 AI Analysis</h3>
-    <h2>Paste Your Code</h2>
-    <form action="/explain-code" method="post">
-        <textarea name="code" rows="10" placeholder="Enter your code here..."></textarea>
-        <button type="submit">Explain Code</button>
-    </form>
+ <div class="code-container">
+    <div class="code-hero">
+        <h3>🤖 AI Analysis</h3>
+        <h2>Paste Your Code</h2>
+        <p style="color: #64748b; font-size: 1.2rem; margin-top: 1rem;">
+            Get instant code explanations, bug detection, and optimization suggestions
+        </p>
+    </div>
+
+    <div class="code-editor">
+        <form action="/explain-code" method="post" class="code-form">
+            <textarea 
+                name="code" 
+                placeholder="// Paste your code here and get AI-powered analysis...
+// Supports Python, JavaScript, Java, C++, and more!"
+                required
+            ></textarea>
+            <button type="submit" class="btn">✨ Explain My Code</button>
+        </form>
+    </div>
 
     {% if answer %}
+    <div class="analysis-section">
         <div class="answer-box">
             <h3>Analysis:</h3>
             <pre><code>{{ answer }}</code></pre>
         </div>
+    </div>
     {% endif %}
-        <a href="/">⬅ Back to Home</a>
+
+    <a href="/" class="back-link">⬅ Back to Home</a>
+</div>
 {% endblock %}
 
 <!--</body>

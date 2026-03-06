@@ -5,6 +5,7 @@ from fastapi.responses import HTMLResponse
 
 from app.rag_module import load_and_store_pdf, rag_answer
 from fastapi import UploadFile, File, Form
+import os
 import shutil
 
 from app.llm_service import generate_response
@@ -28,18 +29,25 @@ def ask_ai(question:str = Form(...)):
 
 from fastapi.responses import RedirectResponse
 
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 @app.post("/upload-pdf")
 async def upload_pdf(request: Request, file: UploadFile = File(...)):
     
     global pdf_uploaded
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     
-    file_location = f"uploaded_{file.filename}"
-
-    with open(file_location, "wb") as f:
+    with open(file_path, "wb") as f:
         f.write(await file.read())
 
+    # remove old vector database
+    if os.path.exists("chroma_db"):
+        shutil.rmtree("chroma_db")
 
-    load_and_store_pdf(file_location)
+    # process PDF for RAG
+    load_and_store_pdf(file_path)
+
     pdf_uploaded = True
 
     return templates.TemplateResponse(

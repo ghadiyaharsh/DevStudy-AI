@@ -75,8 +75,11 @@ def rag_answer(question:str):
         
     #3 Create grounded prompt
     prompt = f"""
-    Use the following context to answer the question.
-    If the answer is not in the context, say you don't know.
+    You are a helpful study assitant.
+    
+    Use ONLY the Provided context to answer the question.
+    If the answer is not in the context, say:
+    "The answer is not available in the uploaded document."
     
     Context:
     {context}
@@ -84,7 +87,7 @@ def rag_answer(question:str):
     Question:
     {question}
     
-    Answer:
+    Answer clearly and concisely.
     """
     
     #4 send to Ollama
