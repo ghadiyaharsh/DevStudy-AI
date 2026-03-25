@@ -12,6 +12,7 @@ from app.rag_module import load_and_store_pdf, rag_answer
 from app.llm_service import generate_response
 
 # Configuration
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -43,14 +44,14 @@ def ask_ai(question: str = Form(...)):
 
 @app.post("/upload-pdf")
 async def upload_pdf(request: Request, file: UploadFile = File(...)):
-    global pdf_uploaded
+    global pdf_uploaded 
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     
     with open(file_path, "wb") as f:
         f.write(await file.read())
     
-    if os.path.exists("chroma_db"):
-        shutil.rmtree("chroma_db")
+    if os.path.exists("CHROMA_DB_PATH"):
+        shutil.rmtree("CHROMA_DB_PATH")
     
     load_and_store_pdf(file_path)
     pdf_uploaded = True
